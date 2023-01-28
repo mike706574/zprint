@@ -66,7 +66,7 @@
 ;; finish   process result of zprint into desired type
 ;; ansi     do coloring for ansi terminal output
 ;; repl     contains a bunch test cases for zprint development
-;; 
+;;
 ;; Basic code flow:
 ;;
 ;; The user visible API in zprint.core determines whether the thing
@@ -121,8 +121,8 @@
      :cljs nil))
 
 (defn set-options!
-  "There is an internal options-map containing default values which is 
-  configured from ~/.zprintrc when zprint is first used.  set-options! 
+  "There is an internal options-map containing default values which is
+  configured from ~/.zprintrc when zprint is first used.  set-options!
   is used to alter the internal options-map by specifying individual
   options-map values that will be merged into the internal options-map.
   Typically, it is called with only new-options, an options map.  If
@@ -149,15 +149,15 @@
 
 (defn ^:no-doc load-options!
   "Loads options from url, expecting an edn options map that will be passed
-  to set-options! Valid options will be cached in 
-  (str (:cache-loc (:cache options)) 
-       File/separator 
+  to set-options! Valid options will be cached in
+  (str (:cache-loc (:cache options))
+       File/separator
        (:cache-dir (:cache options))
        File/separator
        (:url (:cache-dir (:cache options))))
   for (:cache-secs (:url options)) or 5 minutes if :cache-secs is nil.
-  If [:cache :location] contains a \".\", it is considered a Java property, 
-  else it is considered an environment variable.  In either case, 
+  If [:cache :location] contains a \".\", it is considered a Java property,
+  else it is considered an environment variable.  In either case,
   it is looked up.
   Invalid options will throw an Exception.
   HTTP urls will have the Cache-Control max-age parameter respected,
@@ -288,7 +288,7 @@
 ;;
 
 (defn ^:no-doc rewrite-clj-zipper?
-  "Is this a rewrite-clj zipper node? A surprisingly hard thing to 
+  "Is this a rewrite-clj zipper node? A surprisingly hard thing to
   determine, actually."
   [z]
   (when (and (coll? z)
@@ -509,7 +509,7 @@
   number, the fourth (if any) must be a map.  The internal-options
   is either an empty map or {:parse-string? true} for the -fn
   functions, and cannot be overridden by an options argument. Returns
-  a vector with the style-vec and the options used: 
+  a vector with the style-vec and the options used:
   [<style-vec> options line-ending]"
   [coll special-option actual-options]
   (if special-option
@@ -568,7 +568,7 @@
 
 (defn ^:no-doc parse-string-all-options
   "Handle options for :parse-string-all?, by removing
-  :parse-string-all? and changing the default for 
+  :parse-string-all? and changing the default for
   :parse {:interpose } to be true instead of nil."
   [options]
   (-> (if (nil? (:interpose (:parse options)))
@@ -600,7 +600,7 @@
   (take (- end start) (drop start v)))
 
 (defn ^:no-doc remove-loc
-  "If this is a :newline, :indent, :whitespace, or :right, trim off the 
+  "If this is a :newline, :indent, :whitespace, or :right, trim off the
   4th thing."
   [tuple]
   (let [[s color element] tuple]
@@ -638,7 +638,7 @@
 
 (defn ^:no-doc find-eol-blanks
   "Given a str-style-vec, find all of the places where the end of a line
-  has blanks.  Output the tuples that have that and the ones that 
+  has blanks.  Output the tuples that have that and the ones that
   follow. If no-respect? is truthy, then only do this if no :respect-nl,
   :respect-bl, or indent-only are set."
   [options ssv coll no-respect?]
@@ -665,7 +665,7 @@
 
 (defn ^:no-doc real-le
   "Look at a single element in a style-vec string, and if the string at
-  first is itself a string, then if the length is over 
+  first is itself a string, then if the length is over
   :output :real-le-length, then replace any escaped line endings
   with 'real' line endings."
   [real-le-length [s :as element]]
@@ -712,12 +712,12 @@
     (or (:start range-input) (:end range-input) (:range? (:output options)))))
 
 (defn ^:no-doc zprint-str-internal
-  "Take a zipper or string and pretty print with fzprint, 
-  output a str (or possibly a structure with {:output {:format :hiccup}}.  
+  "Take a zipper or string and pretty print with fzprint,
+  output a str (or possibly a structure with {:output {:format :hiccup}}.
   Key :color? is false by default, and should
   be set to true in internal-options to make things colored.
   Special processing for :parse-string-all?, with
-  not only a different code path, but a different default for 
+  not only a different code path, but a different default for
   :parse {:interpose nil} to {:interpose true}"
   [full-options internal-options coll & rest]
   (let [[special-option rest-options]
@@ -906,7 +906,7 @@
 
 (defn zprint-str
   "Take coll, a Clojure data structure or a string containing Clojure code or
-  data, format it readably, and output a str. Additional optional arguments: 
+  data, format it readably, and output a str. Additional optional arguments:
 
       (zprint-str coll <numeric-width>)
       (zprint-str coll <numeric-width> <options-map>)
@@ -924,8 +924,8 @@
 
 (defn czprint-str
   "Take coll, a Clojure data structure or a string containing Clojure code or
-  data, format it readably, and output a str containing ANSI escapes to 
-  syntax color the output. Additional optional arguments: 
+  data, format it readably, and output a str containing ANSI escapes to
+  syntax color the output. Additional optional arguments:
 
       (czprint-str coll <numeric-width>)
       (czprint-str coll <numeric-width> <options-map>)
@@ -943,8 +943,8 @@
 
 (defn zprint
   "Take coll, a Clojure data structure or a string containing Clojure code or
-  data, format it readably, and output to stdout. Additional optional 
-  arguments: 
+  data, format it readably, and output to stdout. Additional optional
+  arguments:
 
       (zprint coll <numeric-width>)
       (zprint coll <numeric-width> <options-map>)
@@ -966,8 +966,8 @@
 
 (defn czprint
   "Take coll, a Clojure data structure or a string containing Clojure code or
-  data, format it readably, and produce output to stdout containing ANSI 
-  escapes to syntax color the output. Optional arguments: 
+  data, format it readably, and produce output to stdout containing ANSI
+  escapes to syntax color the output. Optional arguments:
 
       (czprint coll <numeric-width>)
       (czprint coll <numeric-width> <options-map>)
@@ -991,7 +991,7 @@
      (defmacro zprint-fn-str
        "Given a function name, fn-name, retrieve the source for it,
   and return a string with the source formatted in a highly readable
-  manner. Appends any available specs to the end of the docstring. 
+  manner. Appends any available specs to the end of the docstring.
   Optional arguments:
 
       (zprint-fn-str fn-name <numeric-width>)
@@ -1014,7 +1014,7 @@
        "Given a function name, fn-name, retrieve the source for it,
   and return a string with the source formatted in a highly readable
   manner, including ANSI escape sequences to syntax color the output.
-  Appends any available specs to the end of the docstring. 
+  Appends any available specs to the end of the docstring.
   Optional arguments:
 
       (czprint-fn-str fn-name <numeric-width>)
@@ -1091,7 +1091,7 @@
 ;;
 
 (defn ^:no-doc spaces?
-  "If a string is all spaces and has at least one space, 
+  "If a string is all spaces and has at least one space,
   returns the count of the spaces, otherwise nil."
   [s]
   (let [len (count s)]
@@ -1145,7 +1145,7 @@
   of course to produce a string to put into the output file.  In
   addition, see if that string starts with ;!zprint and if it does,
   pass along that information back to the caller.  The input is a
-  [[next-options <previous-string> indent zprint-num previous-newline? 
+  [[next-options <previous-string> indent zprint-num previous-newline?
   error-vec] form] , where next-options accumulates the information to be
   applied to the next non-comment/non-whitespace element in the
   file.  The output is [next-options output-str indent zprint-num
@@ -1829,7 +1829,7 @@
   file-name is a string, and is usually the name of the input file
   but could be anything to help identify the input file when errors
   in ;!zprint directives are reported.  options is an options-map
-  containing any additional options to be used for this operation, 
+  containing any additional options to be used for this operation,
   and will be overridden by any options specified in ;!zprint directives."
        ([infile file-name outfile options]
         (let [file-str (slurp infile)
@@ -1883,3 +1883,16 @@
                                            fn-spec
                                            (+ indent indent))
                                [:args :ret :fn])))))))))
+
+(zprint
+  #:com.splashfinancial.work-number
+  {:medium-length-key "Value for the medium length key"
+   :short-key "Value for the short key"
+   :really-really-really-really-really-really-really-long-key "The value for the very long key"
+   :number 12345
+   :uuid #uuid "8cbec214-e606-4b3c-8812-00b3fce6714a"
+   :job #:com.splashfinancial.work-number.job
+   {:medium-length-key "Value for the medium length key"
+    :short-key "Value for the short key"}}
+  {:map {:ns-aliases {:com.splashfinancial.work-number :wn
+                      :com.splashfinancial.work-number.job :wn.job}}})

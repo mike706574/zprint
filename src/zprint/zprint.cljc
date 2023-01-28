@@ -174,7 +174,7 @@
 
 ;!zprint {:format :next :vector {:wrap? false}}
 (defn call-option-fn
-  "Call an option-fn and return a validated map of the merged options. 
+  "Call an option-fn and return a validated map of the merged options.
   Returns [merged-options-map new-options zloc l-str r-str changed?] where
   changed? refers only to changes in any of zloc, l-str, or r-str."
   [caller options option-fn zloc l-str r-str]
@@ -271,7 +271,7 @@
 
 (defn guide-debug
   "Given the options map and a caller, look for :guide-debug in the options
-  map.  It looks like [:caller :depth [:element ...]]  If the caller and 
+  map.  It looks like [:caller :depth [:element ...]]  If the caller and
   depth match, return the guide, else nil."
   [caller options]
   (let [debug-vector (:guide-debug options)]
@@ -666,7 +666,7 @@
 (defn accumulate-ll
   "Take the vector carrying the intermediate results, and
   do the right thing with a new string. Vector is
-  [ 0 out - vector accumulating line lengths 
+  [ 0 out - vector accumulating line lengths
     1 cur-len - length of current line
     just-eol? - did we just do an eol?
     ]
@@ -718,7 +718,7 @@
   comment size -- that is handled with the wrap-comments elsewhere.
   Note that only vectors with :whitespace, :indent, or :newline are scanned
   for newlines, and if consecutive newlines appear, only the first
-  is counted as a newline -- the second is counted as a regular 
+  is counted as a newline -- the second is counted as a regular
   character. A single comment is counted as two lines. Lots of edge
   conditions that are really quite important."
   [options ind style-vec]
@@ -794,7 +794,7 @@
   comment size -- that is handled with the wrap-comments at the
   end. Note that only vectors with :whitespace or :indent are scanned
   for newlines, and if consecutive newlines appear, only the first
-  is counted as a newline -- the second is counted as a regular 
+  is counted as a newline -- the second is counted as a regular
   character."
   [options ind style-vec]
   (let [length-vec (first ; this final accumulate-ll is to terminate the last
@@ -828,7 +828,7 @@
          (map #(clojure.string/includes? (first %) "\n") style-vec))))
 
 (defn find-what
-  "Given a style-vec, come up with a string that gives some hint of 
+  "Given a style-vec, come up with a string that gives some hint of
   where this style-vec came from."
   [style-vec]
   (loop [s-vec style-vec]
@@ -858,7 +858,7 @@
 
 (defn style-lines
   "Take a style output, and tell us how many lines it takes to print it
-  and the maximum width that it reaches. Returns 
+  and the maximum width that it reaches. Returns
   [<line-count> <max-width> [line-lengths]].
   Doesn't require any max-width inside the style-vec. Also returns the
   line lengths in case that is helpful (since we have them anyway).
@@ -880,7 +880,7 @@
 (defn style-lines-hangflow
   "Does style-lines on something formatted like [[:hang ...] [:flow ...]],
   which is the output from fzprint-map-two-up. Assumes each :hang or :flow
-  thing is on a separate line, which may not be true when the 
+  thing is on a separate line, which may not be true when the
   hangflow-style-vec is ultimately given to interpose-...."
   [options ind hangflow-style-vec]
   (when (and hangflow-style-vec
@@ -893,7 +893,7 @@
       [(count lengths) max-length lengths])))
 
 (defn fzfit
-  "Given output from style-lines and options, see if it fits the width.  
+  "Given output from style-lines and options, see if it fits the width.
   Return the number of lines it takes if it fits, nil otherwise."
   [{:keys [width rightcnt dbg?], :as options}
    [line-count max-width :as style-lines-return]]
@@ -906,7 +906,7 @@
     (if (<= max-width (- width (fix-rightcnt rightcnt))) line-count nil)))
 
 (defn fzfit-one-line
-  "Given the return from style-lines  and options, 
+  "Given the return from style-lines  and options,
   return true if it fits on a single line."
   [options style-lines-return]
   (let [lines (fzfit options style-lines-return)]
@@ -1060,7 +1060,7 @@
   "Print a single pair of things (though it might not be exactly a
   pair, given comments and :extend and the like), like bindings in
   a let, clauses in a cond, keys and values in a map.  Controlled
-  by various maps, the key of which is caller.  Returns 
+  by various maps, the key of which is caller.  Returns
   [:hang <style-vec>] or [:flow <style-vec>] so that the upstream folks
   know whether this was a hang or flow and can do the right thing
   based on that. If narrow-width is non-nil, that is the width to
@@ -1768,11 +1768,11 @@
 ;;
 
 (defn fzprint-justify-width
-  "Figure the width for a justification of a set of pairs in coll.  
+  "Figure the width for a justification of a set of pairs in coll.
   Also, decide if it makes any sense to justify the pairs at all.
   narrow? says that this call has a narrower width than necessary,
-  and triggers a check to see if any of the firsts are collections. 
-  If they are not collections, and narrow-width is non-nil, then return 
+  and triggers a check to see if any of the firsts are collections.
+  If they are not collections, and narrow-width is non-nil, then return
   nil."
   [caller {{:keys [justify? justify multi-lhs-hang?]} caller, :as options} ind
    narrow-width coll]
@@ -1998,7 +1998,7 @@
   the style-vecs (including indentation and commas) is done by the
   caller of fzprint-map-two-up. Always returns a sequence of vector pairs:
   [[:hang <style-vec-for-one-pair>] [:flow <style-vec-for-one-pair>] ...].
-  If you want a style vec instead, call remove-hangflow on the return 
+  If you want a style vec instead, call remove-hangflow on the return
   from fzprint-map-two-up.  This will use one-line?, but not check to see
   that it actually fits.  If you care about that, then you should check the
   return yourself.  It will, however, make an estimate of whether or not
@@ -2309,7 +2309,7 @@
 
 (defn ignore-key-seq
   "Given a map and a key sequence, remove that key sequence if
-  it appears in the map leaving behind a key :zprint-ignored, 
+  it appears in the map leaving behind a key :zprint-ignored,
   and terminate the reduce if it changes the map."
   [m ks]
   (if (coll? ks)
@@ -2441,9 +2441,9 @@
   follow.  If there is a single thing, it is returned in its own internal
   seq. ((P (foo [this a) (bar-me [this] b) (barx [this y] (+ c y))) ...)
   Made harder by the fact that the symbol might be inside of a #?() reader
-  conditional.  It handles comments before symbols on the symbol indent, 
-  and the comments before the collections on the collection indent.  
-  Since it doesn't know how many collections there are, this is not trivial.  
+  conditional.  It handles comments before symbols on the symbol indent,
+  and the comments before the collections on the collection indent.
+  Since it doesn't know how many collections there are, this is not trivial.
   Must be called with a sequence of z-things (these days called a zseq)"
   [options modifier-set coll]
   #_(prn "partition-all-sym:")
@@ -2597,7 +2597,7 @@
 
 (defn fzprint-hang
   "Try to hang something and try to flow it, and then see which is
-  better.  Has hang and flow indents. fzfn is the function to use 
+  better.  Has hang and flow indents. fzfn is the function to use
   to do zloc.  Note what fzfn does with the input. Presumably the
   caller knows what the fzfn does, so it has to count the items
   itself and pass it in here as zloc-count if it isn't just (zcount zloc)."
@@ -2692,7 +2692,7 @@
               :else (recur (next coll)))))))
 
 (defn check-for-first-coll?
-  "Check a series of sequences to see if the first non-newine thing in any 
+  "Check a series of sequences to see if the first non-newine thing in any
   of them
   is a zcoll?.  If it is, return true, else nil."
   [seq-series]
@@ -2876,9 +2876,9 @@
   "Try out the given zloc, and if it fits on the current line, just
   do that. It might fit on the same line, as this may not be the rest
   of the list that we are printing. If not, check it out with good-enough?
-  and do the best you can.  Three choices, really: fits on same line, 
-  does ok as hanging, or better with flow. hindent is hang-indent, and 
-  findent is flow-indent, and each contains the initial separator.  
+  and do the best you can.  Three choices, really: fits on same line,
+  does ok as hanging, or better with flow. hindent is hang-indent, and
+  findent is flow-indent, and each contains the initial separator.
   Might be nice if the fn-style actually got sent to this fn."
   [caller {:keys [one-line? width], {:keys [hang-avoid]} caller, :as options}
    hindent findent zloc]
@@ -2981,7 +2981,7 @@
   zconstant? true. This is made more difficult by having to skip
   comments along the way as part of the pair check, but keep track
   of the ones we skip so the count is right in the end.  We don't
-  expect any spaces in this but newlines must be handled, because 
+  expect any spaces in this but newlines must be handled, because
   this seq should have been produced by zmap or its equivalent.
   Returns two things: [paired-item-count actual-paired-items],
   where paired-item-count is the number of things from the end of
@@ -3695,7 +3695,7 @@
 (defn fzprint-split-meta-in-seq
   "Given the results from fzprint-get-zloc-seq, if any of the elements are
   zmeta?, then if :meta :split? true, make the second and succeeding
-  elements of the meta an independent element in the outer seq.  
+  elements of the meta an independent element in the outer seq.
   Returns a zloc-seq."
   [caller options zloc-seq]
   (let [result (if (:split? (:meta options))
@@ -3744,7 +3744,7 @@
         (if (empty? remaining) :noseq remaining)))))
 
 (defn add-newline-to-comment
-  "Given [[[\";stuff\" :none :comment]]] or 
+  "Given [[[\";stuff\" :none :comment]]] or
   [[[\";bother\" :none :comment-inline 1]]] add [\"\n\" :none :newline]
   to the inside of it."
   [indent fzprint*-return]
@@ -3766,7 +3766,7 @@
 
 (defn fzprint-up-to-next-zloc
   "Using the information returned from fzprint-up-to-first-zloc or
-  fzprint-up-to-next-zloc, find the next zloc and return 
+  fzprint-up-to-next-zloc, find the next zloc and return
   [pre-next-style-vec next-zloc next-count zloc-seq]"
   [caller options ind [_ _ current-count zloc-seq :as next-data]]
   (let [starting-count (inc current-count)
@@ -4269,8 +4269,8 @@
                    nil)))
 
 (defn zfind-seq
-  "Find the location, counting from zero, and counting every element 
-  in the seq, of the first zthing?.  Return its index if it is found, 
+  "Find the location, counting from zero, and counting every element
+  in the seq, of the first zthing?.  Return its index if it is found,
   nil if not."
   [zthing? zloc-seq]
   (loop [nloc zloc-seq
@@ -4313,7 +4313,7 @@
 ;;
 ;; If the noarg1? value is set, this is the mapping for functions
 ;; immediately below
-;; 
+;;
 
 (def noarg1-set #{:noarg1 :arg1->})
 
@@ -4378,7 +4378,7 @@
 
 (defn modify-zloc-legacy
   "If the (caller options) has a value for :return-altered-zipper, then
-  examine the value.  It should be [<depth> <symbol> <fn>]. 
+  examine the value.  It should be [<depth> <symbol> <fn>].
   If the <depth> is nil, any depth will do. If the
   <symbol> is nil, any symbol will do.  If the <depth> and <symbol>
   match, then the <fn> is called as (fn caller options zloc), and must
@@ -4430,8 +4430,8 @@
   ([fn-map fn-str] (lookup-fn-str fn-map fn-str #{})))
 
 (defn get-correct-options-map
-  "Given a fn-style, which might be a keyword or might be avector with 
-  one or two options maps, get the correct one based on the :ztype 
+  "Given a fn-style, which might be a keyword or might be avector with
+  one or two options maps, get the correct one based on the :ztype
   in the options. Returns [fn-style options-map]"
   [options fn-style]
   (if (vector? fn-style)
@@ -4448,7 +4448,7 @@
 
 (defn lookup-fn-type-map
   "Given a keyword fn-type, look it up in the fn-type-map and handle
-  any aliasing and options maps that come up. This includes adding 
+  any aliasing and options maps that come up. This includes adding
   options maps to the options. Returns [options fn-style]"
   ; In this routine, fn-type is a keyword, and fn-style might be a bare
   ; fn-type, or it might be a vector with options maps.
@@ -4540,7 +4540,7 @@
 (defn fn-style+option-fn
   "Take the current fn-style and lots of other important things,
   and handle lookups in the fn-type-map, as well as calling
-  option-fn(s) as necessary.  
+  option-fn(s) as necessary.
   Returns [options fn-style zloc l-str r-str changed?], where changed?
   refers only to the zloc, l-str, or r-str."
   ([caller options fn-style zloc l-str r-str option-fn-set]
@@ -4599,8 +4599,8 @@
 (declare fzprint-noformat)
 
 (defn fzprint-list*
-  "Print a list, which might be a list or an anon fn.  
-  Lots of work to make a list look good, as that is typically code. 
+  "Print a list, which might be a list or an anon fn.
+  Lots of work to make a list look good, as that is typically code.
   Presently all of the callers of this are :list or :vector-fn."
   [caller l-str r-str
    ; The options map can get re-written down a bit below, so don't get
@@ -6262,7 +6262,7 @@
 
 
 (defn fzprint-guide
-  "Given a zloc-seq wrap the elements to the right margin 
+  "Given a zloc-seq wrap the elements to the right margin
   and be guided by the guide seq."
   [caller
    {:keys [width rightcnt one-line?],
@@ -7152,7 +7152,7 @@
   (reduce #(when (= (ztag %2) :comment) (reduced true)) false zloc-seq))
 
 (defn fzprint-vec*
-  "Print basic stuff like a vector or a set or an array.  Several options 
+  "Print basic stuff like a vector or a set or an array.  Several options
   for how to print them."
   [caller l-str r-str
    {:keys [rightcnt in-code?],
@@ -7488,8 +7488,8 @@
               (if (next nl-count-vec) (next nl-count-vec) nl-count-vec))))))))
 
 (defn count-newline-types
-  "Analyze a style-vec which contains only newlines, and return the count 
-  of newlines in the style vec.  We assume that each :newline style-vec 
+  "Analyze a style-vec which contains only newlines, and return the count
+  of newlines in the style vec.  We assume that each :newline style-vec
   contains one newline (i.e., it was generated by fzprint-newlines)."
   [newline-style-vec]
   (let [count-of-types (count (distinct (map #(nth % 2) newline-style-vec)))]
@@ -7570,8 +7570,8 @@
         result))))
 
 (defn next-non-comment-nl
-  "Given a coll of [hangflow style-vec] pairs, return the 
-  [hangflow style-vec] pair where the style-vec is not a 
+  "Given a coll of [hangflow style-vec] pairs, return the
+  [hangflow style-vec] pair where the style-vec is not a
   :comment, :comment-inline, :newline or :indent."
   [coll]
   (loop [coll coll]
@@ -7590,9 +7590,9 @@
 
 (defn interpose-either-nl-hf
   "Do very specialized interpose, but different seps depending on pred-fn
-  return and nl-separator? and nl-separator-all?. This assumes that 
+  return and nl-separator? and nl-separator-all?. This assumes that
   sep-* does one line, and sep-*-nl does two lines. coll is
-  a series of [[:flow [['\n  ' :none :newline 2]]] 
+  a series of [[:flow [['\n  ' :none :newline 2]]]
                [:flow [['ZprintType' :black :element] ...]]] fragments from
   fzprint-map-two-up."
   [sep-comma sep-comma-nl sep sep-nl
@@ -7712,7 +7712,7 @@
   [caller l-str r-str
    {:keys [one-line? ztype map-depth in-code?],
     {:keys [comma? key-ignore key-ignore-silent nl-separator? force-nl? lift-ns?
-            lift-ns-in-code? indent],
+            lift-ns-in-code? indent ns-aliases],
      :as map-options}
       caller,
     :as options} ind zloc ns]
@@ -7774,6 +7774,11 @@
               _ (dbg-pr options
                         "fzprint-map* zlift-ns ns:" ns
                         "no-sort?" no-sort?)
+              ns-alias (ns-aliases (keyword (apply str (rest ns))))
+              ns (if ns-alias
+                   (str "::" (name ns-alias))
+                   ns)
+              _ (println "HEYO" ns ns-alias)
               l-str (if ns (str "#" ns l-str) l-str)
               pair-seq (or lift-pair-seq pair-seq)
               pair-seq
@@ -7926,9 +7931,9 @@
                      r-str-vec))))
 
 (defn fzprint-future-promise-delay-agent
-  "Print out a future or a promise or a delay.  These can only be 
-  sexpressions, since they don't exist in a textual representation 
-  of code (or data for that matter).  That means that we can use 
+  "Print out a future or a promise or a delay.  These can only be
+  sexpressions, since they don't exist in a textual representation
+  of code (or data for that matter).  That means that we can use
   regular sexpression operations on zloc."
   [options ind zloc]
   (let [zloc-type (cond (zfuture? zloc) :future
@@ -8689,7 +8694,7 @@
 
 (defn determine-ending-split-lines
   "Given a string, find the line ending that is predominent in the beginning
-  of the string, and split the string into separate lines.  Returns 
+  of the string, and split the string into separate lines.  Returns
   [line-ending-string vector-of-lines]"
   [s]
   (if (clojure.string/includes? s "\r")

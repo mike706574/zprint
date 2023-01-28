@@ -292,6 +292,7 @@
 (s/def ::lift-ns? ::boolean)
 (s/def ::unlift-ns? ::boolean)
 (s/def ::lift-ns-in-code? ::boolean)
+(s/def ::ns-aliases? (s/map-of keyword? keyword?))
 (s/def ::to-string? ::boolean)
 (s/def ::use-previous-!zprint? ::boolean)
 (s/def ::value zany?)
@@ -385,7 +386,8 @@
                       ::key-order ::lift-ns? ::lift-ns-in-code? ::key-no-sort
                       ::multi-lhs-hang? ::nl-separator? ::nl-separator-all?
                       ::respect-bl? ::respect-nl? ::sort-in-code? ::sort?
-                      ::unlift-ns? ::key-value-options :alt/tuning]))
+                      ::unlift-ns? ::key-value-options :alt/tuning
+                      ::ns-aliases]))
 (s/def ::max-depth number?)
 (s/def ::max-depth-string string?)
 (s/def ::max-hang-count number?)
@@ -500,7 +502,7 @@
              ::new-l-str ::new-r-str ::option-fn-map ::alt?]))
 
 (defn numbers-or-number-pred?
-  "If they are both numbers and are equal, or the first is a number 
+  "If they are both numbers and are equal, or the first is a number
   and the second one is a pred."
   [x y]
   (and (number? x)
@@ -550,7 +552,7 @@
     ks))
 
 (defn ks-phrase
-  "Take a key-sequence and a value, and decide if we want to 
+  "Take a key-sequence and a value, and decide if we want to
   call it a value or a key."
   [problem]
   (let [val (:val problem)
@@ -680,7 +682,7 @@
 (defn validate-basic
   "Using spec defined above, validate the given options map.  Return
   nil if no errors, or a string containing errors if any. If :coerce-to-false
-  appears as a key, scan the map for keys which are keyword with 
+  appears as a key, scan the map for keys which are keyword with
   zprint.spec/:boolean as their spec, and if any are found replace their
   values with the value of :coerce-to-false."
   ([options source-str]
